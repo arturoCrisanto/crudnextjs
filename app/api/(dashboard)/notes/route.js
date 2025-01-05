@@ -75,3 +75,48 @@ export const POST = async (request) => {
     );
   }
 };
+
+export const DELETE = async (request) => {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    const noteId = searchParams.get("noteId");
+
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return new NextResponse(JSON.stringify({ message: "Invalid User ID" }), {
+        status: 400,
+      });
+    }
+
+    if (!noteId || !Types.ObjectId.isValid(noteId)) {
+      return new NextResponse(JSON.stringify({ message: "Invalid Note ID" }), {
+        status: 400,
+      });
+    }
+
+    await connect();
+    const user = await User.findById(userId);
+    if (!user) {
+      return new NextResponse(JSON.stringify({ message: "User Not Found" }), {
+        status: 404,
+      });
+    }
+
+    const note = await Note.findOneAndDelete({ _id: noteId, user: userId });
+    if (!note) {
+      return new NextResponse(JSON.stringify({ message: "Note Not Found" }), {
+        status: 404,
+      });
+    }
+
+    return new NextResponse(
+      JSON.stringify({ message: "Deleted Successfully", note }),
+      { status: 200 }
+    );
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: "Error Deleting Note", error }),
+      { status: 500 }
+    );
+  }
+};
