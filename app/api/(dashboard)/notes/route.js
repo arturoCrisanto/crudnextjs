@@ -120,3 +120,50 @@ export const DELETE = async (request) => {
     );
   }
 };
+
+export const PATCH = async (request) => {
+  try {
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
+    const noteId = searchParams.get("noteId");
+    const { title, description } = await request.json();
+
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return new NextResponse(JSON.stringify({ message: "Invalid User ID" }), {
+        status: 400,
+      });
+    }
+
+    if (!noteId || !Types.ObjectId.isValid(noteId)) {
+      return new NextResponse(JSON.stringify({ message: "Invalid Note ID" }), {
+        status: 400,
+      });
+    }
+
+    await connect();
+    const user = await User.findById(userId);
+    if (!user) {
+      return new NextResponse(JSON.stringify({ message: "User Not Found" }), {
+        status: 404,
+      });
+    }
+
+    const note = await Note.findOneAndUpdate(
+      { _id: noteId, user: userId },
+      { title, description },
+      { new: true }
+    );
+    if (!note) {
+      return new NextResponse(JSON.stringify({ message: "Note Not Found" }), {
+        status: 404,
+      });
+    }
+
+    return new NextResponse(JSON.stringify(note), { status: 200 });
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ message: "Error Updating Note", error }),
+      { status: 500 }
+    );
+  }
+};
