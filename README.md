@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NEXT JS REST API with Middlewares and MongoDB
+
+This project is a fully functioning REST API built with Next.js. It includes middleware support and uses MongoDB as the database.
+
+## Features
+
+- Next.js framework
+- RESTful API endpoints
+- Middleware integration
+- MongoDB for data storage
 
 ## Getting Started
 
-First, run the development server:
+To get started with this project, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Clone the repository:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/arturoCrisanto/crudnextjs.git
+   ```
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+2. Install dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   npm install
+   ```
 
-## Learn More
+3. Set up your MongoDB database and update the connection string in the environment variables.
 
-To learn more about Next.js, take a look at the following resources:
+4. Run the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+   ```bash
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Deploy on Vercel
+## API Endpoints
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### User Endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `GET /api/users` - Retrieve a list of users
+- `POST /api/users` - Create a new user
+- `GET /api/users/:id` - Retrieve a specific user by ID
+- `PUT /api/users/:id` - Update a specific user by ID
+- `DELETE /api/users/:id` - Delete a specific user by ID
+
+### Note Endpoints
+
+- `GET /api/notes` - Retrieve a list of notes for a specific user
+- `POST /api/notes` - Create a new note for a specific user
+- `DELETE /api/notes` - Delete a specific note for a specific user
+- `PATCH /api/notes` - Update a specific note for a specific user
+- `GET /api/notes/[note]` - Retrieve a specific note by ID for a specific user
+
+## Middleware
+
+This project includes middleware for:
+
+- Authentication
+- Logging
+- Error handling
+
+## License
+
+This project is licensed under the MIT License.
