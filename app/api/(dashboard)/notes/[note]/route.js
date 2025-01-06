@@ -4,7 +4,9 @@ import Note from "@/modals/notes";
 import { Types } from "mongoose";
 import User from "@/modals/user";
 
+//* fetch notes of a specific user by userId
 export const GET = async (request, context) => {
+  // get the noteId from the context it is a dynamic route
   const noteId = context.params.note;
   try {
     const { searchParams } = new URL(request.url);
@@ -29,18 +31,14 @@ export const GET = async (request, context) => {
         status: 404,
       });
     }
-
-    //? check if the note exists in the user's notes
-    if (!user.notes.includes(noteId)) {
+    const note = await Note.findOne({ _id: noteId, user: userId });
+    if (!note) {
       return new NextResponse(JSON.stringify({ message: "Note Not Found" }), {
         status: 404,
       });
     }
 
-    const note = await Note.findById(noteId);
-    return new NextResponse(JSON.stringify({ message: "all Notes", note }), {
-      status: 200,
-    });
+    return new NextResponse(JSON.stringify(note), { status: 200 });
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ message: "Error Fetching Note", error }),
